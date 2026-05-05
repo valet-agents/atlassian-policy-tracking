@@ -1,0 +1,87 @@
+name: atlassian-policy-tracking
+display_name: Atlassian Policy Tracking
+description: >-
+  Watches Confluence policy pages and Jira compliance tickets,
+  and posts to Slack the moment something real changes — what
+  changed, who approved it, and what evidence to update. Answers
+  ad-hoc compliance questions on @mention.
+category: compliance
+
+story:
+  hero: "Watch your policy docs change in real time."
+  subheadline: >-
+    When a Confluence policy is edited or a Jira compliance
+    ticket moves, it posts what changed, who approved it, and
+    what evidence to update.
+  steps:
+    - role: trigger
+      title: "A policy page or compliance ticket changes."
+      body: >-
+        The heartbeat fires every 10 minutes and notices the
+        edit, the status transition, or the new approval
+        comment. No webhook to wire up.
+    - role: action
+      title: "It captures what changed and who approved it."
+      body: >-
+        Diffs the Confluence page, walks the Jira changelog,
+        and pulls the evidence pointer if the change names one.
+      catalog: atlassian-mcp
+    - role: outcome
+      title: "A diff posted in Slack with evidence pointers."
+      body: >-
+        Identifier, approver, linked page or ticket, and
+        evidence to update — under 2,500 characters. @mention
+        back any time to dig in.
+      catalog: slack
+
+connectors:
+  - catalog: atlassian-mcp
+    description: >-
+      The Atlassian MCP server. The agent reads watched
+      Confluence policy pages and Jira compliance tickets,
+      diffs page bodies against MEMORY.md, walks Jira
+      changelogs for status and assignee transitions, and
+      surfaces approval comments. Writes (edit a page,
+      transition a ticket, add a comment) only happen when a
+      Slack user explicitly asks.
+    slot_descriptions:
+      ATLASSIAN_API_KEY: >-
+        Base64-encoded `email:token` for your Atlassian Cloud
+        account. Generate the API token at
+        id.atlassian.com/manage-profile/security/api-tokens,
+        then base64-encode `your-email@example.com:your-token`.
+        Stored as a secret and only injected into the MCP
+        server connection.
+    ui:
+      headline: "Connect Atlassian."
+      blurb: >-
+        Paste the base64-encoded `email:token` from your
+        Atlassian Cloud account. The agent uses it to read the
+        watched Confluence space and Jira project, and (only
+        when you ask in Slack) to make edits.
+      done_note: "Atlassian connected"
+
+channels:
+  - catalog: slack
+    description: >-
+      The agent gets its own Slack bot. Invite it to your
+      compliance / GRC channel for the auto-posted change
+      pings, and to any other channel where teammates should
+      be able to @mention it for ad-hoc compliance questions.
+    ui:
+      headline: "Give Policy Tracking a Slack bot."
+      blurb: >-
+        Invite the bot to your compliance / GRC channel —
+        change pings land there as policies are edited and
+        compliance tickets move. Replies to @mentions stay
+        in-thread.
+      done_note: "Bot ready — invite it to a channel"
+
+  - type: heartbeat
+    every: 10m
+    timezone: UTC
+    description: >-
+      Fires every 10 minutes. The agent diffs each watched
+      Confluence policy page against MEMORY.md, walks the Jira
+      changelog for the configured compliance project, and
+      posts one Slack message per real change set.
