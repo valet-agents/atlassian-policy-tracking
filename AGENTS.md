@@ -9,7 +9,7 @@ This folder contains the source for a Skilled Agent originally built for the Val
 ### Channels
 
 - **slack** (slack): The agent's per-agent Slack bot. Listens for @mentions and replies in-thread, and posts the per-change pings to whichever channels the bot has been invited to. Slack writes use the auto-injected outbound Slack connector.
-- **heartbeat** (heartbeat): Fires every 5 minutes. Declared inline in `valet.yaml`, so it's created automatically by the dashboard setup flow. The heartbeat job diffs watched Confluence policy pages against the MEMORY.md snapshot, walks the Jira changelog for the configured compliance project, and posts one message per real change set (de-dup via MEMORY.md).
+- **heartbeat** (heartbeat): Fires once a day. Declared inline in `valet.yaml`, so it's created automatically by the dashboard setup flow. The heartbeat job diffs watched Confluence policy pages against the MEMORY.md snapshot, walks the Jira changelog for the configured compliance project, and posts one message per real change set (de-dup via MEMORY.md).
 
 ### Secrets
 
@@ -29,7 +29,7 @@ This folder contains the source for a Skilled Agent originally built for the Val
 
 ## Customizing
 
-- **Change the heartbeat interval**: edit `every` on the inline `heartbeat` channel in `valet.yaml` (e.g. `5m`, `30m`, `1h`), then redeploy. The default `5m` keeps cards close to real-time; widen it to lower Atlassian API volume.
+- **Change the heartbeat interval**: edit `every` on the inline `heartbeat` channel in `valet.yaml` (e.g. `1h`, `12h`), then redeploy. The default `24h` runs a daily review; drop it to `1h` or below for closer-to-real-time policy and ticket cards (more Atlassian API volume).
 - **Change what counts as a meaningful change**: edit SOUL.md → "Phase 2" (Confluence real-change threshold) and "Phase 3" (Jira event detection). The Confluence threshold filters cosmetic edits (under 20 chars, no heading or bullet structure changes). The Jira detector recognizes status transitions, assignee changes, and approval-style comments — broaden or tighten the approval phrase list there.
 - **Change the watched scope**: edit the `POLICY_SPACE_KEY`, `POLICY_PAGE_IDS`, and `JIRA_PROJECT_KEY` env vars on the agent. The Confluence watch list also picks up any page workspace-wide labeled `policy`, so labelling a one-off page is enough — no redeploy needed.
 - **Evidence-hint mapping**: SOUL Phase 2.8 / Phase 3.7 reads from this table to compose the *"Evidence to update"* line on each card. The default mapping (edit in SOUL.md if you want to extend):

@@ -1,6 +1,6 @@
 # Heartbeat — Watch Confluence Policies and Jira Compliance Tickets
 
-The heartbeat fires every 5 minutes. There is no payload to
+The heartbeat fires once a day. There is no payload to
 parse — your job is to detect real changes in the watched
 Atlassian artifacts and post one Slack message per change set.
 
@@ -91,7 +91,7 @@ Stop silently (no post) if any of these are true:
 
 - No watched Confluence pages have a version bump and no
   watched Jira tickets have any detected events. The heartbeat
-  fires every 5 minutes — quiet runs are normal and expected.
+  fires once a day — quiet runs are normal and expected.
 - A watched Confluence page changed but the diff is below the
   real-change threshold (Phase 2). Refresh the snapshot anyway.
 - Atlassian is unreachable or returns an error. Log and wait

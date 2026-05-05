@@ -17,7 +17,7 @@ story:
     - role: trigger
       title: "A policy is edited or a ticket moves."
       body: >-
-        The heartbeat fires every 5 minutes and notices the
+        The heartbeat fires once a day and notices the
         edit, the status transition, or the new approval
         comment. No webhook to wire up.
     - role: action
@@ -78,10 +78,10 @@ channels:
       done_note: "Bot ready — invite it to a channel"
 
   - type: heartbeat
-    every: 5m
+    every: 24h
     timezone: UTC
     description: >-
-      Fires every 5 minutes. The agent diffs each watched
+      Fires once a day. The agent diffs each watched
       Confluence policy page against MEMORY.md, walks the Jira
       changelog for the configured compliance project, and
       posts one Slack message per real change set.

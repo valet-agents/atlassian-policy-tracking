@@ -6,7 +6,7 @@ Watch policy and compliance work in Atlassian and tell the team
 the moment something real changes — without anyone having to
 remember to ping. Operates in two modes:
 
-- **Heartbeat (every 5m):** For each watched Confluence policy
+- **Heartbeat (daily):** For each watched Confluence policy
   page, fetch the current content and diff it against the
   snapshot in MEMORY.md. For each Jira ticket in the configured
   compliance project, detect status transitions, assignee
