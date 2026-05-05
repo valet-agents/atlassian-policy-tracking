@@ -6,6 +6,9 @@ description: >-
   what evidence needs updating.
 category: compliance
 
+example:
+  prompt: "What changed in our access control policy this quarter?"
+
 story:
   hero: "Watch your policy docs change in real time."
   subheadline: >-
