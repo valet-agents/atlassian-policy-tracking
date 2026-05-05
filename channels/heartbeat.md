@@ -1,6 +1,6 @@
 # Heartbeat — Watch Confluence Policies and Jira Compliance Tickets
 
-The heartbeat fires every 10 minutes. There is no payload to
+The heartbeat fires every 5 minutes. There is no payload to
 parse — your job is to detect real changes in the watched
 Atlassian artifacts and post one Slack message per change set.
 
@@ -9,11 +9,11 @@ Atlassian artifacts and post one Slack message per change set.
 1. Read the de-dup state from `MEMORY.md` (see shape below).
 2. Resolve the watch list (SOUL **Phase 1**):
    - **Confluence policy pages**: every page in the
-     `POLICY_SPACE_KEY` space, plus any page workspace-wide
-     labeled `policy`.
+     `POLICY_SPACE_KEY` space, every ID in `POLICY_PAGE_IDS`,
+     plus any page workspace-wide labeled `policy`.
    - **Jira compliance tickets**: every issue in the
-     `COMPLIANCE_JIRA_PROJECT` project updated within the last
-     ~30 minutes.
+     `JIRA_PROJECT_KEY` project updated within the last
+     ~10 minutes.
 3. **Confluence pass** (SOUL **Phase 2**): for each watched
    policy page, fetch metadata + body, compare `version.number`
    to the snapshot, diff the body line-by-line, apply the
@@ -91,11 +91,28 @@ Stop silently (no post) if any of these are true:
 
 - No watched Confluence pages have a version bump and no
   watched Jira tickets have any detected events. The heartbeat
-  fires every 10 minutes — quiet runs are normal and expected.
+  fires every 5 minutes — quiet runs are normal and expected.
 - A watched Confluence page changed but the diff is below the
   real-change threshold (Phase 2). Refresh the snapshot anyway.
 - Atlassian is unreachable or returns an error. Log and wait
   for the next heartbeat.
+- This is the **first heartbeat run for a page or ticket** (no
+  snapshot in MEMORY.md). Capture the snapshot but do not post
+  — the next real change is the first one announced.
+
+## If no env vars are set
+
+If none of `POLICY_SPACE_KEY`, `POLICY_PAGE_IDS`, or
+`JIRA_PROJECT_KEY` are set, the agent has nothing to watch. DM
+the workspace install user once with the hint:
+
+> *"I'm running but I don't know what to watch yet. Set
+> `POLICY_SPACE_KEY` (Confluence space), `POLICY_PAGE_IDS`
+> (comma-separated page IDs), or `JIRA_PROJECT_KEY` (Jira
+> project) on this agent and I'll start tracking."*
+
+Then stop the run. Do not post a change card on subsequent
+ticks until at least one env var is set.
 
 ## Hard rules
 

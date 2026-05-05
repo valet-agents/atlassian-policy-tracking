@@ -15,19 +15,19 @@ story:
     what evidence to update.
   steps:
     - role: trigger
-      title: "A policy page or compliance ticket changes."
+      title: "A policy is edited or a ticket moves."
       body: >-
-        The heartbeat fires every 10 minutes and notices the
+        The heartbeat fires every 5 minutes and notices the
         edit, the status transition, or the new approval
         comment. No webhook to wire up.
     - role: action
-      title: "It captures what changed and who approved it."
+      title: "It diffs the change and names the evidence to update."
       body: >-
         Diffs the Confluence page, walks the Jira changelog,
-        and pulls the evidence pointer if the change names one.
+        and surfaces the evidence artifacts that need a refresh.
       catalog: atlassian-mcp
     - role: outcome
-      title: "A diff posted in Slack with evidence pointers."
+      title: "A change card posted in Slack."
       body: >-
         Identifier, approver, linked page or ticket, and
         evidence to update — under 2,500 characters. @mention
@@ -78,10 +78,10 @@ channels:
       done_note: "Bot ready — invite it to a channel"
 
   - type: heartbeat
-    every: 10m
+    every: 5m
     timezone: UTC
     description: >-
-      Fires every 10 minutes. The agent diffs each watched
+      Fires every 5 minutes. The agent diffs each watched
       Confluence policy page against MEMORY.md, walks the Jira
       changelog for the configured compliance project, and
       posts one Slack message per real change set.
