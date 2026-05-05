@@ -1,25 +1,23 @@
 name: atlassian-policy-tracking
 display_name: Atlassian Policy Tracking
 description: >-
-  Watches Confluence policy pages and Jira compliance tickets,
-  and posts to Slack the moment something real changes — what
-  changed, who approved it, and what evidence to update. Answers
-  ad-hoc compliance questions on @mention.
+  Every day, diffs watched Confluence policies and reviews moved
+  Jira compliance tickets — what changed, who approved it, and
+  what evidence needs updating.
 category: compliance
 
 story:
   hero: "Watch your policy docs change in real time."
   subheadline: >-
-    When a Confluence policy is edited or a Jira compliance
-    ticket moves, it posts what changed, who approved it, and
-    what evidence to update.
+    Every day, reviews policy edits and compliance ticket
+    transitions — what changed, who approved it, what evidence
+    to update.
   steps:
     - role: trigger
-      title: "A policy is edited or a ticket moves."
+      title: "Every morning."
       body: >-
-        The heartbeat fires once a day and notices the
-        edit, the status transition, or the new approval
-        comment. No webhook to wire up.
+        The heartbeat fires once a day and picks up policy edits
+        and compliance ticket transitions since the last run.
     - role: action
       title: "It diffs the change and names the evidence to update."
       body: >-

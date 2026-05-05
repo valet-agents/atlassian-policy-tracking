@@ -1,6 +1,6 @@
 # Atlassian Policy Tracking
 
-Watches Confluence policy pages and Jira compliance tickets, and posts to Slack the moment something real changes — what changed, who approved it, and what evidence to update. @mention it any time for a follow-up.
+Every day, reviews policy edits and compliance ticket transitions — what changed, who approved it, what evidence to update.
 
 ## Prerequisites
 - An [Atlassian Cloud](https://www.atlassian.com/cloud) account with an API token and read/write access to the Confluence space and Jira project you want to watch

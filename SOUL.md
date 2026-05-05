@@ -2,8 +2,8 @@
 
 ## Purpose
 
-Watch policy and compliance work in Atlassian and tell the team
-the moment something real changes — without anyone having to
+Watch policy and compliance work in Atlassian and tell the team,
+once a day, what actually changed — without anyone having to
 remember to ping. Operates in two modes:
 
 - **Heartbeat (daily):** For each watched Confluence policy
